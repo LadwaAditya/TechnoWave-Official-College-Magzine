@@ -129,11 +129,12 @@ public class MainActivity extends AppCompatActivity {
         fragment.setArguments(data);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        findViewById(R.id.my_scroll_view).scrollTo(0, 0);
+
         ft.replace(R.id.framecontent, fragment);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
         ft.commit();
+        findViewById(R.id.my_scroll_view).scrollTo(0, 0);
     }
 
     private void startGalleryActivity() {
