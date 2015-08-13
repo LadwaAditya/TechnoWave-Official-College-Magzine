@@ -1,0 +1,95 @@
+#include<stdio.h>
+#include<conio.h>
+#include<ctype.h>
+char st[50];
+int top;
+ void main()
+{
+void push(char);
+char pop();
+int prcd(char);
+char symbol,alpha,infix[50],postfix[50];
+int i,k;
+clrscr();
+printf("\nenter the infix expression:");
+scanf("%s",infix);
+i=0;
+k=0;
+top=-1;
+push('#');
+	while(infix[i]!='\0')
+	{
+		symbol=infix[i++];
+			if(isalpha(symbol))
+			postfix[k++]=symbol;
+			else if(symbol=='(')
+			push(symbol);
+			else if(symbol==')')
+			{
+				alpha=pop();
+				while(alpha!='(')
+				{
+					postfix[k++]=alpha;
+					alpha=pop();
+				}
+			}
+			else
+			{
+				while(prcd(st[top])>=prcd(symbol))
+				{
+					postfix[k++]=pop();
+				}
+				push(symbol);
+			}
+	}
+	while(top>0)
+	{
+	postfix[k++]=pop();
+	}
+	postfix[k]='\0';
+printf("\n the infix expression is %s \n the postfix expression is %s",infix,postfix);
+getch();
+}
+void push(char info)
+{
+	if(top==49)
+	{
+	printf("\n stack is full");
+	return;
+	}
+	st[++top]=info;
+}
+char pop()
+{
+	if(top==-1)
+	{
+	printf("\n stack is empty");
+	return -1;
+	}
+	return st[top--];
+}
+int prcd(char data)
+{
+int val;
+	switch(data)
+	{
+	case '*':
+	case '/':val=2;break;
+	case '+':
+	case '-':val=1;break;
+	case '(':val=0;break;
+	case '#':val=-1;break;
+	}
+	return val;
+}
+
+
+
+
+
+
+
+
+
+
+

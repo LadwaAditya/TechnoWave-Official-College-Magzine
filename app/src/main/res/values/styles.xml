@@ -14,4 +14,7 @@
         <item name="popupTheme">@style/Theme.AppCompat.Light</item>
     </style>
 
+    <style name="frame_width">
+        <item name="android:layout_width">wrap_content</item>
+    </style>
 </resources>

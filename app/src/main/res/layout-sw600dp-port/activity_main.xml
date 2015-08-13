@@ -45,6 +45,7 @@
                 </LinearLayout>
 
                 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
                     android:id="@+id/framecontent"
                     android:layout_width="@dimen/frame_width"
                     android:layout_height="match_parent"
@@ -56,7 +57,10 @@
                     android:layout_marginStart="@dimen/keyline_left"
                     android:layout_marginTop="@dimen/frame_top_margin"
                     android:background="@color/gray"
-                    android:elevation="@dimen/appbar_elevation" />
+                    android:elevation="@dimen/appbar_elevation">
+
+
+                </FrameLayout>
 
 
             </RelativeLayout>

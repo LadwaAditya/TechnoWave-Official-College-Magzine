@@ -1,0 +1,111 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+struct element
+     {
+          int exp;
+          int coef;
+          struct element *next;
+      };
+typedef struct element node;
+node *poly1,*poly2,*poly3;
+void create(node*);
+void display(node*);
+
+void main()
+      {
+         node *ref,*alpha,*beta,*gamma,*info;
+         clrscr();
+         poly1=(node*)malloc(sizeof(node));
+         poly2=(node*)malloc(sizeof(node));
+         poly3=(node*)malloc(sizeof(node));
+         poly1->next=poly1;
+         poly2->next=poly2;
+         poly3->next=poly3;
+         create(poly1);
+         create(poly2);
+         alpha=poly1->next;beta=poly2->next;gamma=poly3->next;
+         while(alpha!=poly1 && beta!=poly2)
+                   {
+	                gamma->next=(node*)malloc(sizeof(node));
+	                gamma=gamma->next;
+	                gamma->next=poly3;
+	                if(alpha->exp>beta->exp)
+	                    {
+	                               gamma->exp=alpha->exp;
+	                               gamma->coef=alpha->coef;
+	                               alpha=alpha->next;
+	                     }
+	                 else if(alpha->exp<beta->exp)
+	                                   {
+	     gamma->exp=beta->exp;
+	gamma->coef=beta->coef;
+	beta=beta->next;
+	}
+	else if(alpha->exp==beta->exp)
+	{
+	gamma->exp=alpha->exp;
+	gamma->coef=alpha->coef+beta->coef;
+	alpha=alpha->next;beta=beta->next;
+	}
+}
+while(alpha!=poly1)
+{
+	gamma->next=(node*)malloc(sizeof(node));
+	gamma=gamma->next;
+	gamma->next=poly3;
+	gamma->exp=alpha->exp;
+	gamma->coef=alpha->coef;
+	alpha=alpha->next;
+
+}
+while(beta!=poly2)
+{
+	gamma->next=(node*)malloc(sizeof(node));
+	gamma=gamma->next;
+	gamma->next=poly3;
+	gamma->exp=beta->exp;
+	gamma->coef=beta->coef;
+	beta=beta->next;
+}
+printf("\nthe first polynomial is\n");
+display(poly1);
+printf("\nthe second polynomial is\n");
+display(poly2);
+printf("\nthe third polynomial is\n");
+display(poly3);
+getch();
+}
+void create(node *p)
+{
+int terms,i,ex,coef1;
+node *ref;
+printf("\nenter the no of terms in the  polynomial:");
+scanf("%d",&terms);
+printf("\nenter the terms of the  polynomial\n");
+ref=p;
+	for(i=0;i<terms;i++)
+	{
+	printf("\nenter the exponential:");
+	scanf("%d",&ex);
+	printf("\nenter the coef:");
+	scanf("%d",&coef1);
+	ref->next=(node*)malloc(sizeof(node));
+	ref=ref->next;
+	ref->exp=ex;
+	ref->coef=coef1;
+	ref->next=p;
+	}
+}
+void display(node *p)
+{
+node *info;
+info=p->next;
+while(info!=p)
+{
+printf("\t%2d x^%2d",info->coef,info->exp);
+info=info->next;
+}
+}
+
+

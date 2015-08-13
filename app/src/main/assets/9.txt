@@ -1,0 +1,36 @@
+#include<stdio.h>
+#include<conio.h>
+void main()
+{
+int a[50],i,n;
+void insert(int a[],int);
+clrscr();
+printf("\nenter the size of the array:");
+scanf("%d",&n);
+printf("\nenter the elemnts of the array\n");
+for(i=1;i<=n;i++)
+scanf("%d",&a[i]);
+	for(i=1;i<=n;i++)
+	{
+	insert(a,i);
+	}
+printf("\n the elements after heapifying are\n");
+for(i=1;i<=n;i++)
+printf("\t %d",a[i]);
+getch();
+}
+void insert(int a[50],int n)
+{
+int item;
+item=a[n];
+	while(n>1 && item>a[n/2])
+	{
+	a[n]=a[n/2];
+	n=n/2;
+	}
+a[n]=item;
+}
+
+
+
+

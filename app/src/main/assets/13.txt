@@ -1,0 +1,140 @@
+#include<iostream.h>
+#include<conio.h>
+#include<malloc.h>
+struct element
+{
+int data;
+struct element *lch,*rch;
+};
+typedef struct element node;
+class tree
+{
+node *root;
+public:
+	tree()
+	{
+	root=NULL;
+	}
+	node* getroot()
+	{
+	return root;
+	}
+void create(int);
+void inorder(node*);
+void preorder(node*);
+void postorder(node*);
+};
+void tree::create(int val)
+{
+node *ref,*temp,*info;
+info=(node*)malloc(sizeof(node));
+info->data=val;
+info->lch=info->rch=NULL;
+	if(root==NULL)
+	{
+	root=info;
+	return;
+	}
+ref=root;
+temp=root;
+	while(ref!=NULL && ref->data!=val)
+	{
+	temp=ref;
+	if(val<ref->data)
+	ref=ref->lch;
+	else if(val>ref->data)
+	ref=ref->rch;
+	}
+	if(ref->data==val)
+	{
+	cout<<"\n the value already present";
+	return;
+	}
+	if(temp->data>val)
+	temp->lch=info;
+	else
+	temp->rch=info;
+}
+void tree::inorder(node *ref)
+{
+	if(ref!=NULL)
+	{
+	inorder(ref->lch);
+	cout<<"\t"<<ref->data;
+	inorder(ref->rch);
+	}
+}
+void tree::preorder(node *ref)
+{
+	if(ref!=NULL)
+	{
+	cout<<"\t"<<ref->data;
+	preorder(ref->lch);
+	preorder(ref->rch);
+	}
+}
+void tree::postorder(node *ref)
+{
+	if(ref!=NULL)
+	{
+	postorder(ref->lch);
+	postorder(ref->rch);
+	cout<<"\t"<<ref->data;
+	}
+}
+int main()
+{
+tree tr;
+int value,choice,ch1;
+node *alpha;
+do
+{
+cout<<"\n1.create\n2.inorder\n3.preorder\n4.postorder\n5.exit";
+cout<<"\n enter the choice:";
+cin>>choice;
+	switch(choice)
+	{
+	case 1:
+		while(1)
+		{
+		cout<<"\nto insert an element enter 1 and 0 for no:";
+		cin>>ch1;
+		if(ch1==0)break;
+		cout<<"\n enter the element to be inserted:";
+		cin>>value;
+		tr.create(value);
+		}
+	break;
+	case 2:
+	alpha=tr.getroot();
+	if(alpha==NULL)
+	cout<<"\n the tree is empty";
+	else
+	tr.inorder(alpha);
+	break;
+	case 3:
+	alpha=tr.getroot();
+	if(alpha==NULL)
+	cout<<"\n the tree is empty";
+	else
+	tr.preorder(alpha);
+	break;
+	case 4:
+	alpha=tr.getroot();
+	if(alpha==NULL)
+	cout<<"\n the tree is empty";
+	else
+	tr.postorder(alpha);
+	break;
+	case 5:break;
+	default:break;
+	}
+}while(choice!=5);
+return 0;
+}
+
+
+
+
+
+

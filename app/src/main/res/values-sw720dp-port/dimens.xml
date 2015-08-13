@@ -1,0 +1,12 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="keyline_left">32dp</dimen>
+    <dimen name="keyline_right">32dp</dimen>
+
+
+    <dimen name="list_view_width">220dp</dimen>
+    <dimen name="frame_width">500dp</dimen>
+    <dimen name="frame_top_margin">100dp</dimen>
+    <dimen name="frame_bottom_margin">50dp</dimen>
+</resources>

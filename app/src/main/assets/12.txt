@@ -1,0 +1,82 @@
+/*
+
+write a c++ program to create a class called octal which
+has tha characteristics of an octal number.Implement the following
+operations by writing an appropriate constructor
+and an overloaded operator +.
+
+1)octal h=x; where x is an integer
+
+2)int y=h+k; where h is an octal object and h is an integer
+Display the octal result by overloading the operator <<.
+Also display the values of h and y.
+
+*/
+
+
+
+#include<iostream.h>
+#include<conio.h>
+#include<iomanip.h>
+#include<math.h>
+class octal
+{
+private:
+int num;
+	int convert_base(int x,int from,int to)
+	{
+	int result=0,flag=0,i=0;
+		if(x<0)
+		{
+		x=-x;
+		flag=1;
+		}
+		while(x>0)
+		{
+		result=result+((x%to)*int(pow(from,i++)));
+		x=x/to;
+		}
+		if(flag)
+		result=result;
+		return result;
+	}
+public:
+	octal()
+	{
+	num=0;
+	}
+	octal(int n)
+	{
+	num=convert_base(n,10,8);
+	}
+	int operator +(int k)
+	{
+	return (convert_base(num,8,10)+k);
+	}
+	friend ostream &operator<<(ostream &out,octal &m)
+	{
+	out<<m.num;
+	return out;
+	}
+};
+int main()
+{
+clrscr();
+cout<<"\nenter a decimal number:";
+int z;
+cin>>z;
+octal h(z);
+cout<<"\nequivalent octal value:"<<h<<endl;
+cout<<"\nenter the integer to be added to the octal num(h):K="<<endl;
+int k;
+cin>>k;
+int y=h+k;
+octal octsum(y);
+cout<<"\nresult of addition="<<setw(5)<<y<<" in decimal"<<endl;
+cout<<"\nresult of addition="<<setw(5)<<octsum<<" in octal"<<endl;
+getch();
+return 0;
+}
+
+
+
