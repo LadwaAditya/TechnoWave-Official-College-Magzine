@@ -6,7 +6,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+
 
 /**
  * Created by AdityaLadwa on 17-Jul-15.
@@ -43,10 +44,8 @@ public class ImageAdapter extends BaseAdapter {
             imgV = (ImageView) view;
 
 
-        Picasso.with(mContext)
+        Glide.with(mContext)
                 .load(Utility.mImageId[i])
-                .noFade()
-                .resize(200, 200)
                 .centerCrop()
                 .into(imgV);
 
