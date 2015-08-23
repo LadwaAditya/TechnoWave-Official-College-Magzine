@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -136,42 +137,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view.getId() == R.id.fab_menu_item_download) {
             fabMenu.close(true);
-            int currentImagePos = mViewPager.getCurrentItem();
+            int position = mViewPager.getCurrentItem();
+            new DownloadImage().execute(position);
 
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), Utility.mImageId[currentImagePos]);
-
-            String path = Environment.getExternalStorageDirectory().toString();
-
-
-            boolean success = false;
-
-            try {
-                new File(path + "/TechnoWave").mkdirs();
-
-                File img = new File(path, "TechnoWave/Technowave" + currentImagePos + ".png");
-
-                FileOutputStream outStream = new FileOutputStream(img);
-                bm.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-
-                MediaStore.Images.Media.insertImage(getContentResolver(), img.getAbsolutePath(), img.getName(), img.getName());
-                MediaScannerConnection.scanFile(this, new String[]{img.getPath()}, new String[]{"image/png"}, null);
-                outStream.flush();
-                outStream.close();
-                success = true;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            if (success) {
-                Toast.makeText(getApplicationContext(), "Image saved",
-                        Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(),
-                        "Error saving image", Toast.LENGTH_LONG).show();
-            }
 
         }
 
@@ -277,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             View rootView = inflater.inflate(R.layout.fragment_photo, container, false);
             int pos = getArguments().getInt("POSITION");
             ImageView imageView = (ImageView) rootView.findViewById(R.id.imageview_photo);
-            PhotoViewAttacher mAttacher = new PhotoViewAttacher(imageView);
+            new PhotoViewAttacher(imageView);
 
 
             Glide.with(getActivity())
@@ -290,6 +258,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return rootView;
         }
 
+    }
+
+    private class DownloadImage extends AsyncTask<Integer, Boolean, Void> {
+        boolean success = false;
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            int currentImagePos = integers[0];
+
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), Utility.mImageId[currentImagePos]);
+
+            String path = Environment.getExternalStorageDirectory().toString();
+
+
+            try {
+                new File(path + "/TechnoWave").mkdirs();
+
+                File img = new File(path, "TechnoWave/Technowave" + currentImagePos + ".png");
+
+                FileOutputStream outStream = new FileOutputStream(img);
+                bm.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+
+                MediaStore.Images.Media.insertImage(getContentResolver(), img.getAbsolutePath(), img.getName(), img.getName());
+                MediaScannerConnection.scanFile(getApplicationContext(), new String[]{img.getPath()}, new String[]{"image/png"}, null);
+                outStream.flush();
+                outStream.close();
+                success = true;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (success)
+                Toast.makeText(getApplicationContext(), "Image saved", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
