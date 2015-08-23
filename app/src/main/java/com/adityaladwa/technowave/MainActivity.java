@@ -10,8 +10,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -22,14 +22,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -50,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout mDrawerLayout;
     public ViewPager mViewPager;
     public ArticlePagerAdapter mPagerAdapter;
-    private ListView mDrawerListView;
-    private static final int NAVDRAWER_LAUNCH_DELAY = 300;
     private FloatingActionMenu fabMenu;
 
 
@@ -63,23 +57,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        assert ab != null;
-        ab.setTitle(R.string.app_name);
+        if (ab != null)
+            ab.setTitle(R.string.app_name);
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeButtonEnabled(true);
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setHomeButtonEnabled(true);
+        }
 
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        String[] mArticleList = getResources().getStringArray(R.array.article_list);
-        mDrawerListView = (ListView) findViewById(R.id.left_drawer);
-
-        mDrawerListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mArticleList));
-        mDrawerListView.setOnItemClickListener(new DrawerItemClickListner());
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
+                mDrawerLayout.closeDrawers();
+                selectItem(menuItem);
+                return true;
+            }
+        });
 
         mViewPager = (ViewPager) findViewById(R.id.pager_article);
         mPagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager());
@@ -89,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fabMenu = (FloatingActionMenu) findViewById(R.id.fab);
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
-
-        selectItem(1);
 
 
         mDrawerToggle.syncState();
@@ -105,12 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -122,10 +115,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -171,32 +160,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private class DrawerItemClickListner implements AdapterView.OnItemClickListener {
 
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
-
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    selectItem(position);
-
-                }
-            }, NAVDRAWER_LAUNCH_DELAY);
-
-
-            mDrawerLayout.closeDrawer(mDrawerListView);
-
+    private void selectItem(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.drawer_message:
+                mViewPager.setCurrentItem(0);
+                break;
+            case R.id.drawer_editor:
+                mViewPager.setCurrentItem(10);
+                break;
+            case R.id.drawer_art:
+                mViewPager.setCurrentItem(15);
+                break;
+            case R.id.drawer_kannada:
+                mViewPager.setCurrentItem(27);
+                break;
+            case R.id.drawer_english:
+                mViewPager.setCurrentItem(39);
+                break;
+            case R.id.drawer_gallery:
+                mViewPager.setCurrentItem(66);
+                break;
         }
-    }
-
-    private void selectItem(int position) {
-        //TODO handle navdrawer calls
 
     }
-
-
 
 
     public class ArticlePagerAdapter extends FragmentStatePagerAdapter {

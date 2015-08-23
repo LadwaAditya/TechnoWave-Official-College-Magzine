@@ -7,27 +7,17 @@
     <string name="action_settings">Settings</string>
 
 
-    <array name="article_list">
-        <item>Photo Gallery</item>
-        <item>1.Polynomial</item>
-        <item>2.Infix to postfix</item>
-        <item>3.Evaluate expression</item>
-        <item>4.Queue</item>
-        <item>5.Employee</item>
-        <item>6.String</item>
-        <item>7.Stack</item>
-        <item>8.Single Linked List</item>
-        <item>9.Sparse Matrix</item>
-        <item>10.Heap</item>
-        <item>11.Doubly Linked List</item>
-        <item>12.Date</item>
-        <item>13.Octal</item>
-        <item>14.Binary Tree</item>
+    <string name="list0">Messages</string>
+    <string name="list1">Editor\'s Desk</string>
+    <string name="list2">Art Gallery</string>
+    <string name="list3">Articles Kannada</string>
+    <string name="list4">Articles English</string>
+    <string name="list5">Photo Gallery</string>
 
-    </array>
+
     <string name="title_activity_gallery">GalleryActivity</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
 </resources>

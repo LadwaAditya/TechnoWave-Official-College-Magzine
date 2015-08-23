@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_message"
+            android:checked="true"
+            android:title="@string/list0" />
+
+        <item
+            android:id="@+id/drawer_editor"
+            android:title="@string/list1" />
+        <item
+            android:id="@+id/drawer_art"
+            android:title="@string/list2" />
+        <item
+            android:id="@+id/drawer_kannada"
+            android:title="@string/list3" />
+        <item
+            android:id="@+id/drawer_english"
+            android:title="@string/list4" />
+        <item
+            android:id="@+id/drawer_gallery"
+            android:title="@string/list5" />
+    </group>
+
+</menu>
