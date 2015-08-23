@@ -176,10 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
 
-            if (position == 0) {
-                startGalleryActivity();
-                return;
-            }
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -195,15 +192,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void selectItem(int position) {
-        //  mDrawerListView.setItemChecked(position, true);
-        Bundle data = new Bundle();
-        data.putInt("pos", position);
+        //TODO handle navdrawer calls
 
     }
 
-    private void startGalleryActivity() {
-        startActivity(new Intent(MainActivity.this, GalleryActivity.class));
-    }
+
 
 
     public class ArticlePagerAdapter extends FragmentStatePagerAdapter {
