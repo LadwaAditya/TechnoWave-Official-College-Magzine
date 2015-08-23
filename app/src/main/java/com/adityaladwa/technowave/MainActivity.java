@@ -38,7 +38,6 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,11 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout mDrawerLayout;
     public ViewPager mViewPager;
     public ArticlePagerAdapter mPagerAdapter;
-    private String[] mArticleList;
     private ListView mDrawerListView;
     private static final int NAVDRAWER_LAUNCH_DELAY = 300;
-    private ActionBar ab;
-    private FloatingActionButton fab, fab1;
     private FloatingActionMenu fabMenu;
 
 
@@ -66,7 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Setup toolbar as ActionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ab = getSupportActionBar();
+        ActionBar ab = getSupportActionBar();
+        assert ab != null;
         ab.setTitle(R.string.app_name);
 
 
@@ -78,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ab.setHomeButtonEnabled(true);
 
 
-        mArticleList = getResources().getStringArray(R.array.article_list);
+        String[] mArticleList = getResources().getStringArray(R.array.article_list);
         mDrawerListView = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerListView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mArticleList));
@@ -87,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mViewPager = (ViewPager) findViewById(R.id.pager_article);
         mPagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
-        fab = (FloatingActionButton) findViewById(R.id.fab_menu_item_download);
-        fab1 = (FloatingActionButton) findViewById(R.id.fab_menu_item_share);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_menu_item_download);
+        FloatingActionButton fab1 = (FloatingActionButton) findViewById(R.id.fab_menu_item_share);
         fabMenu = (FloatingActionMenu) findViewById(R.id.fab);
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
@@ -285,8 +282,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 outStream.flush();
                 outStream.close();
                 success = true;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
