@@ -1,9 +1,12 @@
 package com.adityaladwa.technowave;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,11 +34,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -49,7 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView mDrawerListView;
     private static final int NAVDRAWER_LAUNCH_DELAY = 300;
     private ActionBar ab;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab, fab1;
+    private FloatingActionMenu fabMenu;
 
 
     @Override
@@ -81,7 +87,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mPagerAdapter = new ArticlePagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
         fab = (FloatingActionButton) findViewById(R.id.fab_menu_item_download);
+        fab1 = (FloatingActionButton) findViewById(R.id.fab_menu_item_share);
+        fabMenu = (FloatingActionMenu) findViewById(R.id.fab);
         fab.setOnClickListener(this);
+        fab1.setOnClickListener(this);
 
         selectItem(1);
 
@@ -126,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.fab_menu_item_download) {
+            fabMenu.close(true);
             int currentImagePos = mViewPager.getCurrentItem();
 
             Bitmap bm = BitmapFactory.decodeResource(getResources(), Utility.mImageId[currentImagePos]);
@@ -138,12 +148,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 new File(path + "/TechnoWave").mkdirs();
 
-                File img = new File(path, "TechnoWave/Technowave" + currentImagePos + ".jpg");
+                File img = new File(path, "TechnoWave/Technowave" + currentImagePos + ".png");
 
                 FileOutputStream outStream = new FileOutputStream(img);
-                bm.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                bm.compress(Bitmap.CompressFormat.PNG, 100, outStream);
 
                 MediaStore.Images.Media.insertImage(getContentResolver(), img.getAbsolutePath(), img.getName(), img.getName());
+                MediaScannerConnection.scanFile(this, new String[]{img.getPath()}, new String[]{"image/png"}, null);
                 outStream.flush();
                 outStream.close();
                 success = true;
@@ -164,10 +175,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-        if (view.getId() == R.id.fab_menu_item_share){
+        if (view.getId() == R.id.fab_menu_item_share) {
+            fabMenu.close(true);
             int currentImagePos = mViewPager.getCurrentItem();
 
-            //TODO Share provide via implicit intent
+            Bitmap mBitmap = BitmapFactory.decodeResource(getResources(), Utility.mImageId[currentImagePos]);
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("image/png");
+
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, "TechnoWave");
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+            Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    values);
+
+            OutputStream outstream;
+            try {
+                outstream = getContentResolver().openOutputStream(uri);
+                mBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outstream);
+                outstream.close();
+            } catch (Exception e) {
+                System.err.println(e.toString());
+            }
+
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            startActivity(Intent.createChooser(shareIntent, "Share Image"));
 
         }
 
