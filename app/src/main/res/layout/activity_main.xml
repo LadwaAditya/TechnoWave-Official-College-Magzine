@@ -27,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
-
             android:layout_centerInParent="true" />
 
         <com.github.clans.fab.FloatingActionMenu
@@ -40,14 +39,16 @@
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
-
             fab:menu_colorNormal="@color/primary"
-            fab:menu_colorPressed="@color/accent">
+            fab:menu_colorPressed="@color/accent"
+            fab:menu_labels_hideAnimation="@anim/fab_scale_down"
+            fab:menu_labels_showAnimation="@anim/fab_scale_up">
 
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/fab_menu_item_download"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@android:drawable/stat_sys_download_done"
                 fab:fab_colorNormal="@color/primary"
                 fab:fab_colorPressed="@color/primary_dark"
                 fab:fab_colorRipple="@color/accent"
@@ -58,6 +59,7 @@
                 android:id="@+id/fab_menu_item_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_share"
                 fab:fab_colorNormal="@color/primary"
                 fab:fab_colorPressed="@color/primary_dark"
                 fab:fab_colorRipple="@color/accent"
@@ -68,19 +70,6 @@
 
     </RelativeLayout>
 
-
-    <!--Drawer List-->
-    <!--<ListView-->
-    <!--android:id="@+id/left_drawer"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_gravity="start"-->
-    <!--android:background="@android:color/darker_gray"-->
-    <!--android:cacheColorHint="@android:color/darker_gray"-->
-    <!--android:choiceMode="singleChoice"-->
-    <!--android:dividerHeight="@null"-->
-    <!--android:padding="15dp"-->
-    <!--android:paddingTop="32dp" />-->
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"

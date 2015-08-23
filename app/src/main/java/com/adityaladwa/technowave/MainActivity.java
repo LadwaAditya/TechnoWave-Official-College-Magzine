@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public ViewPager mViewPager;
     public ArticlePagerAdapter mPagerAdapter;
     private FloatingActionMenu fabMenu;
+    public static final int NOTIFICATION_ID = 1;
 
 
     @Override
@@ -239,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private class DownloadImage extends AsyncTask<Integer, Boolean, Void> {
         boolean success = false;
+        String imagepath;
 
         @Override
         protected Void doInBackground(Integer... integers) {
@@ -262,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 outStream.flush();
                 outStream.close();
                 success = true;
+                imagepath = img.getAbsolutePath().toString();
             } catch (IOException e) {
                 e.printStackTrace();
             }
